@@ -6,6 +6,9 @@ import os
 
 bot = Bot(token=os.getenv("TG_TOKEN"))
 
+print(os.getenv("TG_TOKEN"))
+
+
 dp = Dispatcher()
 
 
