@@ -6,9 +6,6 @@ import os
 
 bot = Bot(token=os.getenv("TG_TOKEN"))
 
-print(os.getenv("TG_TOKEN"))
-
-
 dp = Dispatcher()
 
 
@@ -18,7 +15,8 @@ async def start_cmd(message: types.Message):
 
 
 @dp.message()
-async def echo(message: types.Message):
+async def echo(message: types.Message, bot:Bot):
+    await bot.send_message(message.from_user.id, "Ответ:")
     await message.answer(f"{message.text}")
 
 
