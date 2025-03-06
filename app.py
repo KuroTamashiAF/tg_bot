@@ -1,27 +1,28 @@
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import CommandStart
+
 import asyncio
 import os
 
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
+from handlers.user_private import user_private_router
+
+
+ALOWED_UPDATES = ["message", "edited_message"]
 
 bot = Bot(token=os.getenv("TG_TOKEN"))
 
 dp = Dispatcher()
-
-
-@dp.message(CommandStart())
-async def start_cmd(message: types.Message):
-    await message.answer("Это была команда старт")
-
-
-@dp.message()
-async def echo(message: types.Message, bot:Bot):
-    await bot.send_message(message.from_user.id, "Ответ:")
-    await message.answer(f"{message.text}")
+dp.include_routers(
+    user_private_router,
+)
 
 
 async def main():
-    await dp.start_polling(bot)
+    await bot.delete_webhook(drop_pending_updates=True)
+    await dp.start_polling(bot, allowed_updates=ALOWED_UPDATES)
 
 
 if __name__ == "__main__":
